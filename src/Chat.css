@@ -1,0 +1,131 @@
+/* Basic resets */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Overall container styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #a3c2c2, #e1f5f5); /* Soft blue-green gradient representing the sea */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Chat container styling */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 80vh; /* Increased height for the chat box */
+    width: 100%;
+    max-width: 700px; /* Increased max-width for a larger chat box */
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background-image: url('https://www.example.com/path-to-your-sea-image.jpg'); /* Background image of the sea */
+    background-size: cover;
+    background-blur: rgba(255, 255, 255, 0.7); /* Slight blur effect */
+}
+
+/* Chat header styling */
+.chat-header {
+    background: rgba(0, 123, 255, 0.8); /* Semi-transparent blue similar to ocean waves */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+}
+
+/* Instructions styling */
+.chat-header p {
+    margin: 10px 0;
+}
+
+.chat-header ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.chat-header li {
+    margin: 5px 0;
+}
+
+/* Messages container styling */
+.messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+}
+
+/* Individual message styling */
+.message {
+    padding: 12px 18px;
+    margin-bottom: 10px;
+    border-radius: 25px;
+    background-color: #e1f5f5; /* Light blue-green */
+    max-width: 80%;
+    align-self: flex-start;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    font-size: 16px;
+}
+
+.message:nth-child(even) {
+    background-color: #007bff; /* Deep ocean blue */
+    color: white;
+    align-self: flex-end;
+}
+
+/* Form styling */
+form {
+    display: flex;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+    border-top: 1px solid #ddd;
+}
+
+/* Input styling */
+input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    margin-right: 10px;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+/* Button styling */
+button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
