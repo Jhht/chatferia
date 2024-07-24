@@ -1,44 +1,24 @@
-const API_BASE_URL = '';// a la espera de deplsegar public api
+const API_BASE_URL = 'http://iachat.gjfeawd4epgadpc9.spaincentral.azurecontainer.io';
 
-export const sendMessageToApi = async (message) => {
+export const startConversation = async (userMessage) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/send-message`, {
+        const response = await fetch(`${API_BASE_URL}/conversations/start`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message }),
+            body: JSON.stringify({ "question": userMessage }),
         });
 
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
 
-        const data = await response.json();
+        const data = await response.text(); // Change to response.text() for plain text response
+        console.log("API response:", data); // Log the API response
         return data;
     } catch (error) {
-        console.error('Error sending message:', error);
-        throw error;
-    }
-};
-
-export const getMessagesFromApi = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/messages`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching messages:', error);
+        console.error('Error:', error);
         throw error;
     }
 };

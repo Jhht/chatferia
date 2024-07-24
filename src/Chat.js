@@ -1,41 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import Message from './Message';
-import { sendMessageToApi, getMessagesFromApi } from './api';
+import React, { useState } from 'react';
+import { startConversation } from './api';
 import './Chat.css';
 
 const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
 
-    useEffect(() => {
-        const fetchMessages = async () => {
-            try {
-                const messagesFromApi = await getMessagesFromApi();
-                setMessages(messagesFromApi);
-            } catch (error) {
-                console.error('Failed to fetch messages:', error);
-            }
-        };
-
-        fetchMessages();
-    }, []);
-
-    const sendMessage = async (e) => {
+    const handleSendMessage = async (e) => {
         e.preventDefault();
-        if (input.trim()) {
-            try {
-                const newMessage = await sendMessageToApi(input);
-                setMessages([...messages, newMessage]);
-                setInput('');
-            } catch (error) {
-                console.error('Failed to send message:', error);
-            }
+        
+        if (input.trim() === '') return;
+
+        // Add the user's message to the chat
+        const newMessage = { text: input, sender: 'user' };
+        setMessages([...messages, newMessage]);
+
+        try {
+            const botResponse = await startConversation(input);
+            console.log("Bot response:", botResponse); // Log the bot response
+            
+            // Add the bot's response to the chat
+            const botMessage = { text: botResponse, sender: 'bot' };
+            setMessages([...messages, newMessage, botMessage]);
+
+        } catch (error) {
+            const errorMessage = { text: 'Error occurred while fetching response', sender: 'bot' };
+            setMessages([...messages, newMessage, errorMessage]);
         }
+
+        setInput('');
     };
 
     return (
         <div className="chat-container">
-            <div className="chat-header">
+             <div className="chat-header">
                 <h1>Chat Feria Muestras 2024</h1>
                 <p>Bienvenido a la Feria de Muestras 2024! Aquí van unos tipos para usar este chat:</p>
                 <ul>
@@ -46,11 +44,16 @@ const Chat = () => {
                 </ul>
             </div>
             <div className="messages">
-                {messages.map((msg, index) => (
-                    <Message key={index} text={msg.text} />
+                {messages.map((message, index) => (
+                    <div
+                        key={index}
+                        className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
+                    >
+                        {message.text}
+                    </div>
                 ))}
             </div>
-            <form onSubmit={sendMessage}>
+            <form onSubmit={handleSendMessage}>
                 <input
                     type="text"
                     value={input}
@@ -63,4 +66,4 @@ const Chat = () => {
     );
 };
 
-export default Chat
+export default Chat;

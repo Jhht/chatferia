@@ -29,7 +29,6 @@ body {
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    background-image: url('https://www.example.com/path-to-your-sea-image.jpg'); /* Background image of the sea */
     background-size: cover;
     background-blur: rgba(255, 255, 255, 0.7); /* Slight blur effect */
 }
@@ -78,7 +77,12 @@ body {
     font-size: 16px;
 }
 
-.message:nth-child(even) {
+.user-message {
+    background-color: #e1f5f5; /* Light blue-green */
+    align-self: flex-start;
+}
+
+.bot-message {
     background-color: #007bff; /* Deep ocean blue */
     color: white;
     align-self: flex-end;
