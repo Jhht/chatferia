@@ -1,24 +1,37 @@
-const API_BASE_URL = 'http://iachat.gjfeawd4epgadpc9.spaincentral.azurecontainer.io';
+const API_URL = 'http://feriantechat.fmemgncsf3e7f5aa.spaincentral.azurecontainer.io';
 
-export const startConversation = async (userMessage) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/conversations/start`, {
+const startConversation = (question, onMessage) => {
+    const eventSource = new EventSource(`${API_URL}/conversations/response`);
+
+    eventSource.onopen = () => {
+        console.log('Connection to server opened.');
+
+        // Send the initial question
+        fetch(`${API_URL}/conversations/response`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ "question": userMessage }),
+            body: JSON.stringify({ question }),
+            mode:'cors'
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+        }).catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
         });
+    };
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+    eventSource.onmessage = (event) => {
+        const cleanedData = event.data.replace(/^data:\s*/, ''); // Remove 'data: ' prefix
+        onMessage(cleanedData); // Continuously update with the cleaned text
+    };
 
-        const data = await response.text(); // Change to response.text() for plain text response
-        console.log("API response:", data); // Log the API response
-        return data;
-    } catch (error) {
-        console.error('Error:', error);
-        throw error;
-    }
+    eventSource.onerror = (err) => {
+        console.error('There was an error from the server', err);
+        eventSource.close();
+    };
 };
+
+export { startConversation };

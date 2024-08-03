@@ -1,14 +1,7 @@
-/* Basic resets */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-/* Overall container styling */
+/* General styles */
 body {
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #a3c2c2, #e1f5f5); /* Soft blue-green gradient representing the sea */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,120 +9,108 @@ body {
     margin: 0;
 }
 
-/* Chat container styling */
 .chat-container {
+    width: 100%;
+    max-width: 600px;
+    height: 80vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 80vh; /* Increased height for the chat box */
-    width: 100%;
-    max-width: 700px; /* Increased max-width for a larger chat box */
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 15px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    background-size: cover;
-    background-blur: rgba(255, 255, 255, 0.7); /* Slight blur effect */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
 }
 
-/* Chat header styling */
 .chat-header {
-    background: rgba(0, 123, 255, 0.8); /* Semi-transparent blue similar to ocean waves */
-    color: white;
-    text-align: center;
+    background-color: #007bff;
     padding: 20px;
-    border-bottom: 1px solid #ddd;
-    position: relative;
+    color: #ffffff;
+    text-align: center;
+    border-bottom: 1px solid #e1e1e1;
 }
 
-/* Instructions styling */
+.chat-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
 .chat-header p {
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 .chat-header ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
+    margin: 10px 0 0;
+    color: #cfd8e3;
 }
 
 .chat-header li {
     margin: 5px 0;
 }
 
-/* Messages container styling */
 .messages {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+    display: flex;
+    flex-direction: column;
+    background-color: #f7f9fc;
 }
 
-/* Individual message styling */
 .message {
-    padding: 12px 18px;
+    max-width: 75%;
     margin-bottom: 10px;
-    border-radius: 25px;
-    background-color: #e1f5f5; /* Light blue-green */
-    max-width: 80%;
-    align-self: flex-start;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    position: relative;
+    word-wrap: break-word;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .user-message {
-    background-color: #e1f5f5; /* Light blue-green */
-    align-self: flex-start;
+    align-self: flex-end;
+    background-color: #007bff;
+    color: #ffffff;
 }
 
 .bot-message {
-    background-color: #007bff; /* Deep ocean blue */
-    color: white;
-    align-self: flex-end;
+    align-self: flex-start;
+    background-color: #e9ecef;
+    color: #333333;
 }
 
-/* Form styling */
 form {
     display: flex;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #e1e1e1;
+    padding: 10px;
+    background-color: #ffffff;
 }
 
-/* Input styling */
-input {
+input[type="text"] {
     flex: 1;
-    padding: 12px 16px;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    margin-right: 10px;
+    padding: 10px 20px;
+    border: 1px solid #e1e1e1;
+    border-radius: 20px;
+    font-size: 16px;
     outline: none;
-    font-size: 16px;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    margin-right: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
-}
-
-/* Button styling */
 button {
-    padding: 12px 24px;
+    padding: 10px 20px;
     border: none;
-    border-radius: 25px;
     background-color: #007bff;
-    color: white;
+    color: #ffffff;
     font-size: 16px;
+    border-radius: 20px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    outline: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
     background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-button:active {
-    transform: scale(0.95);
 }

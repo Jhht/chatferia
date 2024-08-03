@@ -8,39 +8,42 @@ const Chat = () => {
 
     const handleSendMessage = async (e) => {
         e.preventDefault();
-        
+
         if (input.trim() === '') return;
 
         // Add the user's message to the chat
         const newMessage = { text: input, sender: 'user' };
-        setMessages([...messages, newMessage]);
+        setMessages(prevMessages => [...prevMessages, newMessage]);
 
-        try {
-            const botResponse = await startConversation(input);
-            console.log("Bot response:", botResponse); // Log the bot response
-            
-            // Add the bot's response to the chat
-            const botMessage = { text: botResponse, sender: 'bot' };
-            setMessages([...messages, newMessage, botMessage]);
+        // Function to handle incoming message updates
+        const handleIncomingMessage = (message) => {
+            setMessages(prevMessages => {
+                const lastMessage = prevMessages[prevMessages.length - 1];
+                if (lastMessage && lastMessage.sender === 'bot') {
+                    // Update the last bot message with new content
+                    return [...prevMessages.slice(0, -1), { text: lastMessage.text + message, sender: 'bot' }];
+                } else {
+                    // Add new bot message
+                    return [...prevMessages, { text: message, sender: 'bot' }];
+                }
+            });
+        };
 
-        } catch (error) {
-            const errorMessage = { text: 'Error occurred while fetching response', sender: 'bot' };
-            setMessages([...messages, newMessage, errorMessage]);
-        }
+        // Start the conversation and handle messages from the server
+        startConversation(input, handleIncomingMessage);
 
+        // Clear the input field
         setInput('');
     };
 
     return (
         <div className="chat-container">
-             <div className="chat-header">
-                <h1>Chat Feria Muestras 2024</h1>
-                <p>Bienvenido a la Feria de Muestras 2024! Aquí van unos tipos para usar este chat:</p>
+            <div className="chat-header">
+                <h1>Trade Fair Assistant</h1>
+                <p>Welcome to the Gijón Trade Fair! Ask me where to buy the products you are interested in.</p>
                 <ul>
-                    <li>Pregunta por productos en los que estes interesado o información respecto a distintos stands!</li>
-                    <li>Pregunta en que stands adquirir los productos en los que estes interesado!</li>
-                    <li>Pregunta por un camino personalizado a través de la feria con los productos que te interesen!</li>
-                    <li>El chat de la Feria de Muestras esta para ayudarte en lo que necesites</li>
+                    <li>Find shops with specific products</li>
+                    <li>Get directions to shops</li>
                 </ul>
             </div>
             <div className="messages">
@@ -48,6 +51,7 @@ const Chat = () => {
                     <div
                         key={index}
                         className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
+                        style={{ whiteSpace: 'pre-wrap' }} // Ensures that text wraps properly
                     >
                         {message.text}
                     </div>
