@@ -52,11 +52,13 @@ const Chat = () => {
     return (
         <div className="chat-container">
             <div className="chat-header">
-                <h1>Trade Fair Assistant</h1>
-                <p>Welcome to the Gijón Trade Fair! Ask me where to buy the products you are interested in.</p>
+                <h1>Chat Feria Muestras 2024</h1>
+                <p>Bienvenido a la Feria de Muestras 2024! Aquí van unos tipos para usar este chat:</p>
                 <ul>
-                    <li>Find shops with specific products</li>
-                    <li>Get directions to shops</li>
+                    <li>Pregunta por productos en los que estes interesado o información respecto a distintos stands!</li>
+                    <li>Pregunta en que stands adquirir los productos en los que estes interesado!</li>
+                    <li>Pregunta por un camino personalizado a través de la feria con los productos que te interesen!</li>
+                    <li>El chat de la Feria de Muestras esta para ayudarte en lo que necesites</li>
                 </ul>
             </div>
             <div className="messages">
