@@ -1,24 +1,48 @@
-import { fetchEventSource } from '@microsoft/fetch-event-source';
-
 const API_URL = 'https://ia-chat-app-b370ea980606.herokuapp.com';
 
-const startConversation = (question, onMessage) => {
-    fetchEventSource(`${API_URL}/conversations/start`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'text/event-stream',
-        },
-        body: JSON.stringify({ question }),
-        onmessage(event) {
-            const cleanedData = event.data.replace(/^data:\s*/, ''); // Remove 'data: ' prefix
-            console.log(cleanedData + cleanedData.length);
-            onMessage(cleanedData); // Continuously update with the cleaned text
-        },
-        onerror(err) {
-            console.error('There was an error from the server', err);
-        },
-    });
+const startConversation = async (question, onMessage) => {
+    try {
+        const response = await fetch(`${API_URL}/conversations/start`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ question })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            onMessage(decoder.decode(value));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
 };
 
-export { startConversation };
+const endConversation = async () => {
+    try {
+        const response = await fetch(`${API_URL}/conversations/end`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        console.log('Conversation ended', response.status);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
+export { startConversation, endConversation };
