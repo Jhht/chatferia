@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { startConversation } from './api';
+import ReactMarkdown from 'react-markdown';
+import { startConversation, endConversation } from './api';
 import './Chat.css';
 
 const Chat = () => {
@@ -36,6 +37,18 @@ const Chat = () => {
         setInput('');
     };
 
+    const handleClearChat = async () => {
+        // Clear the chat messages
+        setMessages([]);
+
+        // Call the endpoint to end the conversation
+        try {
+            await endConversation();
+        } catch (error) {
+            console.error('Error ending conversation:', error);
+        }
+    };
+
     return (
         <div className="chat-container">
             <div className="chat-header">
@@ -50,10 +63,9 @@ const Chat = () => {
                 {messages.map((message, index) => (
                     <div
                         key={index}
-                        className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
-                        style={{ whiteSpace: 'pre-wrap' }} // Ensures that text wraps properly
+                        className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`} 
                     >
-                        {message.text}
+                        <ReactMarkdown>{message.text}</ReactMarkdown>
                     </div>
                 ))}
             </div>
@@ -65,6 +77,7 @@ const Chat = () => {
                     placeholder="Type your message..."
                 />
                 <button type="submit">Send</button>
+                <button type="button" onClick={handleClearChat}>Clear</button>
             </form>
         </div>
     );
