@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { startConversation, endConversation } from './api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane, faTrash } from '@fortawesome/free-solid-svg-icons';
 import './Chat.css';
 
 const Chat = () => {
@@ -78,8 +80,12 @@ const Chat = () => {
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Type your message..."
                 />
-                <button type="submit">Send</button>
-                <button type="button" onClick={handleClearChat}>Clear</button>
+                 <button type="submit">
+                    <FontAwesomeIcon icon={faPaperPlane} />
+                </button>
+                <button type="button" onClick={handleClearChat}>
+                    <FontAwesomeIcon icon={faTrash} />
+                </button>
             </form>
         </div>
     );
