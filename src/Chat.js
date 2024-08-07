@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { startConversation, endConversation } from './api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faTrash , faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
 import './Chat.css';
 
-const Chat = () => {
-    const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState('');
 
+const Chat = () => {
+    const [messages, setMessages, currentMessage] = useState([]);
+    const [input, setInput] = useState('');
+    const messagesEndRef = useRef(null);
+    const chatContainerRef = useRef(null);
+    const [isHelpVisible, setIsHelpVisible] = useState(false);
+  const [introVisible, setIntroVisible] = useState(true);
+
+
+    const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
     const handleSendMessage = async (e) => {
         e.preventDefault();
 
@@ -37,6 +48,9 @@ const Chat = () => {
 
         // Clear the input field
         setInput('');
+        if (introVisible) {
+        setIntroVisible(false);
+        }
     };
 
     const handleClearChat = async () => {
@@ -50,45 +64,57 @@ const Chat = () => {
             console.error('Error ending conversation:', error);
         }
     };
+    useEffect(() => {
+    scrollToBottom();
+  }, [messages, currentMessage]);
 
-    return (
-        <div className="chat-container">
-            <div className="chat-header">
-                <h1>Chat Feria Muestras 2024</h1>
-                <p>Bienvenido a la Feria de Muestras 2024! Aquí van unos tipos para usar este chat:</p>
-                <ul>
-                    <li>Pregunta por productos en los que estes interesado o información respecto a distintos stands!</li>
-                    <li>Pregunta en que stands adquirir los productos en los que estes interesado!</li>
-                    <li>Pregunta por un camino personalizado a través de la feria con los productos que te interesen!</li>
-                    <li>El chat de la Feria de Muestras esta para ayudarte en lo que necesites</li>
-                </ul>
-            </div>
-            <div className="messages">
-                {messages.map((message, index) => (
-                    <div
-                        key={index}
-                        className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`} 
-                    >
-                        <ReactMarkdown>{message.text}</ReactMarkdown>
-                    </div>
-                ))}
-            </div>
-            <form onSubmit={handleSendMessage}>
-                <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type your message..."
-                />
-                 <button type="submit">
-                    <FontAwesomeIcon icon={faPaperPlane} />
-                </button>
-                <button type="button" onClick={handleClearChat}>
-                    <FontAwesomeIcon icon={faTrash} />
-                </button>
-            </form>
-        </div>
-    );
+
+  return (
+   <div className="chat-wrapper">
+      <div className="chat-header">
+        <h1>Chat Feria Muestras 2024</h1>
+      
+      </div>
+<div 
+      className="messages" 
+      ref={chatContainerRef}
+    >        
+     {introVisible && (
+          <div className="intro-message">
+            <p>Bienvenido a la Feria de Muestras 2024! Aquí van unos tipos para usar este chat:</p>
+            <ul>
+              <li>Tip 1: Describe tu consulta sobre la feria claramente.</li>
+              <li>Tip 2: Usa el botón de enviar para enviar tu mensaje.</li>
+              <li>Tip 3: Haz clic en el icono de basura para limpiar el chat.</li>
+            </ul>
+          </div>
+        )}
+    {messages.map((message, index) => (
+          <div
+            key={index}
+            className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
+          >
+            <ReactMarkdown>{message.text}</ReactMarkdown>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+      <form onSubmit={handleSendMessage}>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Escribe tu mensaje.."
+        />
+        <button type="submit">
+          <FontAwesomeIcon icon={faPaperPlane} />
+        </button>
+        <button type="button" onClick={handleClearChat}>
+          <FontAwesomeIcon icon={faTrash} />
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default Chat;
